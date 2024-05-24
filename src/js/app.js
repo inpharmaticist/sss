@@ -24,9 +24,11 @@
         DOM.parts.addEventListener("input", combineParts);
 
         DOM.splitSecretTab.addEventListener("click", () => {
+            clearError()
             switchTab(true)
         })
         DOM.combineSecretTab.addEventListener("click", () => {
+            clearError()
             switchTab(false)
         })
     }
@@ -41,6 +43,16 @@
         DOM.combineSecret.classList.toggle("hidden", split)
     }
 
+    function setError(message) {
+        DOM.error.textContent = "Error: " + message;
+        DOM.error.classList.toggle("hidden", false)
+    }
+
+    function clearError() {
+        DOM.error.textContent = "";
+        DOM.error.classList.toggle("hidden", true)
+    }
+
     function generateParts() {
         // Clear old generated
         DOM.generated.innerHTML = "";
@@ -51,48 +63,39 @@
         var required = parseFloat(DOM.required.value);
         // validate the input
         if (total < 2) {
-            DOM.error.textContent = "Total must be at least 1";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Total must be at least 2")
             return;
         }
         else if (total > 255) {
-            DOM.error.textContent = "Total must be at most 255";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Total must be at most 255")
             return;
         }
         else if (required < 2) {
-            DOM.error.textContent = "Required must be at least 1";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Required must be at least 2")
             return;
         }
         else if (required > 255) {
-            DOM.error.textContent = "Required must be at most 255";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Required must be at most 255")
             return;
         }
         else if (isNaN(total)) {
-            DOM.error.textContent = "Invalid value for total";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Invalid value for total")
             return;
         }
         else if (isNaN(required)) {
-            DOM.error.textContent = "Invalid value for required";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Invalid value for required")
             return;
         }
         else if (required > total) {
-            DOM.error.textContent = "Required must be less than total";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Required must be less than total")
             return;
         }
         else if (secret.length == 0) {
-            DOM.error.textContent = "Secret is blank";
-            DOM.error.classList.toggle("hidden", false)
+            setError("Secret is blank")
             return;
         }
         else {
-            DOM.error.classList.toggle("hidden", true)
-            DOM.error.textContent = "";
+            clearError()
         }
         // Generate the parts to share
         var minPad = 1024; // see https://github.com/amper5and/secrets.js#note-on-security

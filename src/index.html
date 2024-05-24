@@ -16,6 +16,7 @@
                     <p class="mb-0">Split your secret into parts which can be combined back into the original secret using some or all of the parts.</p>
                 </div>
             </div>
+            <p id="error-message" class="text-red-700 my-3 w-full p-3 bg-red-100 rounded-lg hidden border-red-200 border"></p>
             <div class="w-full flex gap-2 border-b border-zinc-200 border-solid border-0">
                 <div id="split-secret-tab" role="tab" class="px-2 leading-8 mb-1 text-sm font-semibold cursor-pointer hover:bg-zinc-100 rounded-lg relative active-tab">Split Secret</div>
                 <div id="combine-secret-tab" role="tab" class="px-2 leading-8 mb-1 text-sm cursor-pointer hover:bg-zinc-100 rounded-lg relative">Combine Secret</div>
@@ -35,7 +36,6 @@
                 <p class="mb-1">Distribute one file to each person in your group.</p>
                 <p class="mb-1">If <span id="recreatesize">3</span> of those people can combine the contents of their file using this page, they can view the secret.</p>
                 <p class="mb-3">Remember to delete the parts from your computer once you're finished. If you use a rubbish bin for deleted files, also remove them from the rubbish bin.</p>
-                <p id="error-message" class="text-red-700 my-3 w-full p-3 bg-red-100 rounded-lg hidden border-red-200 border"></p>
                 <h2 class="text-3xl my-3">Parts</h2>
                 <ol id="generated" class="max-w-full break-words rounded-lg overflow-hidden">
                     <li>Enter your secret above.</li>
