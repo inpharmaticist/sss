@@ -2,15 +2,19 @@
 (function() {
 
     var DOM = {};
-    DOM.required = $(".required");
-    DOM.total = $(".total");
-    DOM.secret = $(".secret");
-    DOM.distributesize = $(".distributesize");
-    DOM.recreatesize = $(".recreatesize");
-    DOM.error = $(".error");
-    DOM.generated = $(".generated");
-    DOM.parts = $(".parts");
-    DOM.combined = $(".combined");
+    DOM.required = $("#required-parts");
+    DOM.total = $("#total-parts");
+    DOM.secret = $("#secret");
+    DOM.distributesize = $("#distributesize");
+    DOM.recreatesize = $("#recreatesize");
+    DOM.error = $("#error-message");
+    DOM.generated = $("#generated");
+    DOM.parts = $("#parts");
+    DOM.combined = $("#combined");
+    DOM.splitSecret = $("#split-secret")
+    DOM.splitSecretTab = $("#split-secret-tab")
+    DOM.combineSecret = $("#combine-secret")
+    DOM.combineSecretTab = $("#combine-secret-tab")
 
     function init() {
         // Events
@@ -18,6 +22,23 @@
         DOM.total.addEventListener("input", generateParts);
         DOM.secret.addEventListener("input", generateParts);
         DOM.parts.addEventListener("input", combineParts);
+
+        DOM.splitSecretTab.addEventListener("click", () => {
+            switchTab(true)
+        })
+        DOM.combineSecretTab.addEventListener("click", () => {
+            switchTab(false)
+        })
+    }
+
+    function switchTab(split) {
+        DOM.splitSecretTab.classList.toggle("font-semibold", split)
+        DOM.splitSecretTab.classList.toggle("active-tab", split)
+        DOM.combineSecretTab.classList.toggle("font-semibold", !split)
+        DOM.combineSecretTab.classList.toggle("active-tab", !split)
+
+        DOM.splitSecret.classList.toggle("hidden", !split)
+        DOM.combineSecret.classList.toggle("hidden", split)
     }
 
     function generateParts() {
@@ -31,37 +52,46 @@
         // validate the input
         if (total < 2) {
             DOM.error.textContent = "Total must be at least 1";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (total > 255) {
             DOM.error.textContent = "Total must be at most 255";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (required < 2) {
             DOM.error.textContent = "Required must be at least 1";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (required > 255) {
             DOM.error.textContent = "Required must be at most 255";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (isNaN(total)) {
             DOM.error.textContent = "Invalid value for total";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (isNaN(required)) {
             DOM.error.textContent = "Invalid value for required";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (required > total) {
             DOM.error.textContent = "Required must be less than total";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else if (secret.length == 0) {
             DOM.error.textContent = "Secret is blank";
+            DOM.error.classList.toggle("hidden", false)
             return;
         }
         else {
+            DOM.error.classList.toggle("hidden", true)
             DOM.error.textContent = "";
         }
         // Generate the parts to share
@@ -71,7 +101,7 @@
         for (var i=0; i<shares.length; i++) {
             var share = shares[i];
             var li = document.createElement("li");
-            li.classList.add("part");
+            li.classList.add("px-2", "py-2.5", "odd:bg-[#f4f4f3]", "even:bg-[#e9e8e6]");
             li.textContent = share;
             DOM.generated.appendChild(li);
         }
