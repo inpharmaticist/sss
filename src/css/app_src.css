@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type="number"] {
+  display: inline-block;
+  width: 70px;
+}
+
+.active-tab::after {
+  @apply absolute w-full rounded-md bg-orange-600;
+  /* background: #f78166; */
+  bottom: calc(50% - 22px);
+  content: "";
+  height: 2px;
+  right: 50%;
+  transform: translate(50%, -50%);
+  z-index: 1;
+}
+
+.form-control {
+  @apply block rounded-md border border-solid border-zinc-300 bg-white px-3 py-2 text-base text-gray-900 transition-colors placeholder:text-gray-400 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+textarea.form-control {
+  @apply w-full resize-y;
+}

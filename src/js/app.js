@@ -2,15 +2,19 @@
 (function() {
 
     var DOM = {};
-    DOM.required = $(".required");
-    DOM.total = $(".total");
-    DOM.secret = $(".secret");
-    DOM.distributesize = $(".distributesize");
-    DOM.recreatesize = $(".recreatesize");
-    DOM.error = $(".error");
-    DOM.generated = $(".generated");
-    DOM.parts = $(".parts");
-    DOM.combined = $(".combined");
+    DOM.required = $("#required-parts");
+    DOM.total = $("#total-parts");
+    DOM.secret = $("#secret");
+    DOM.distributesize = $("#distributesize");
+    DOM.recreatesize = $("#recreatesize");
+    DOM.error = $("#error-message");
+    DOM.generated = $("#generated");
+    DOM.parts = $("#parts");
+    DOM.combined = $("#combined");
+    DOM.splitSecret = $("#split-secret")
+    DOM.splitSecretTab = $("#split-secret-tab")
+    DOM.combineSecret = $("#combine-secret")
+    DOM.combineSecretTab = $("#combine-secret-tab")
 
     function init() {
         // Events
@@ -18,6 +22,35 @@
         DOM.total.addEventListener("input", generateParts);
         DOM.secret.addEventListener("input", generateParts);
         DOM.parts.addEventListener("input", combineParts);
+
+        DOM.splitSecretTab.addEventListener("click", () => {
+            clearError()
+            switchTab(true)
+        })
+        DOM.combineSecretTab.addEventListener("click", () => {
+            clearError()
+            switchTab(false)
+        })
+    }
+
+    function switchTab(split) {
+        DOM.splitSecretTab.classList.toggle("font-semibold", split)
+        DOM.splitSecretTab.classList.toggle("active-tab", split)
+        DOM.combineSecretTab.classList.toggle("font-semibold", !split)
+        DOM.combineSecretTab.classList.toggle("active-tab", !split)
+
+        DOM.splitSecret.classList.toggle("hidden", !split)
+        DOM.combineSecret.classList.toggle("hidden", split)
+    }
+
+    function setError(message) {
+        DOM.error.textContent = "Error: " + message;
+        DOM.error.classList.toggle("hidden", false)
+    }
+
+    function clearError() {
+        DOM.error.textContent = "";
+        DOM.error.classList.toggle("hidden", true)
     }
 
     function generateParts() {
@@ -30,39 +63,39 @@
         var required = parseFloat(DOM.required.value);
         // validate the input
         if (total < 2) {
-            DOM.error.textContent = "Total must be at least 1";
+            setError("Total must be at least 2")
             return;
         }
         else if (total > 255) {
-            DOM.error.textContent = "Total must be at most 255";
+            setError("Total must be at most 255")
             return;
         }
         else if (required < 2) {
-            DOM.error.textContent = "Required must be at least 1";
+            setError("Required must be at least 2")
             return;
         }
         else if (required > 255) {
-            DOM.error.textContent = "Required must be at most 255";
+            setError("Required must be at most 255")
             return;
         }
         else if (isNaN(total)) {
-            DOM.error.textContent = "Invalid value for total";
+            setError("Invalid value for total")
             return;
         }
         else if (isNaN(required)) {
-            DOM.error.textContent = "Invalid value for required";
+            setError("Invalid value for required")
             return;
         }
         else if (required > total) {
-            DOM.error.textContent = "Required must be less than total";
+            setError("Required must be less than total")
             return;
         }
         else if (secret.length == 0) {
-            DOM.error.textContent = "Secret is blank";
+            setError("Secret is blank")
             return;
         }
         else {
-            DOM.error.textContent = "";
+            clearError()
         }
         // Generate the parts to share
         var minPad = 1024; // see https://github.com/amper5and/secrets.js#note-on-security
@@ -71,7 +104,7 @@
         for (var i=0; i<shares.length; i++) {
             var share = shares[i];
             var li = document.createElement("li");
-            li.classList.add("part");
+            li.classList.add("px-2", "py-2.5", "odd:bg-[#f4f4f3]", "even:bg-[#e9e8e6]");
             li.textContent = share;
             DOM.generated.appendChild(li);
         }
