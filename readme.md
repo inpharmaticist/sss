@@ -1,3 +1,4 @@
+(This repo is a mirror of Ian Coleman's site)
 # About
 
 A single page tool for splitting secrets into parts or recreating secrets from
